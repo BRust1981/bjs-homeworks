@@ -2,24 +2,14 @@
 
 const eq = (a, b) => {return a === b};
 
-// Может я неправильно понял, но тут сравнивается неограниченное количество массивов
-function compareArrays(){
-  const args = Array.from(arguments);
-  if(Array.from(args).some(param => !Array.isArray(param))){
+function compareArrays(arr1, arr2){
+  if(!Array.isArray(arr1) || !Array.isArray(arr2)){
     throw new Error('Аргументы должны быть массивами!');
-  } else if(args.length < 2){
-    throw new Error('Для сравнения требуется минимум 2 массива!');
   } else {
-    if(args.some(param => param.length !== args[1].length)){
-      return false;
-    } else {
-      return args.every(param => {
-        return param.every((item, index) => {
-          return eq(item, args[0][index]);
-        })
-      });
-    }
-    return true;
+    return arr1.length === arr2.length &&   // размер одинаковый
+    arr1.every((item, index) => {           // и содержимое
+      return eq(item, arr2[index]);
+    });
   }
 }
 
@@ -41,7 +31,9 @@ function memoize(fn, limit){
     } else {    // иначе создаем новый расчет
       const newResult = {
         args: arrArgs,
-        result: compareArrays(...arguments)
+        result: arrArgs.every(param => {
+          return compareArrays(param, arrArgs[0]);
+        })
       };
       // проверяем не полон ли массив результатов
       if(results.length >= limit){
@@ -51,7 +43,7 @@ function memoize(fn, limit){
       // и добавляем новый в конец
       results.push(newResult);
       // сообщаем о результатах
-      console.log(`Результат ${newResult.result} расчитан и сохранен в памяти.`);
+      console.log(`Результат ${newResult.result} рассчитан и сохранён в памяти.`);
       return newResult.result;
     }
   }
