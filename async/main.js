@@ -1,10 +1,5 @@
 'use strict';
 
-function alertMessage (message){
-  alert(message);
-};
-
-
 function setAlarm(time, callback){
   const itsTime = time;
   return function(curTime) {
@@ -25,8 +20,8 @@ function setDailyRhythm(wakeUpTime, bedTime){
 
   setInterval(() => {
     const curTime = new Date;
-    wakeUpAlarm(curTime.getHours() + ':' + curTime.getMinutes());
-    goSleepAlarm(curTime.getHours() + ':' + curTime.getMinutes());
+    wakeUpAlarm(curTime.getHours().toString().padStart(2, '0') + ':' + curTime.getMinutes().toString().padStart(2, '0'));
+    goSleepAlarm(curTime.getHours().toString().padStart(2, '0') + ':' + curTime.getMinutes().toString().padStart(2, '0'));
   }, 1000);
 }
 
@@ -37,4 +32,4 @@ function setDailyRhythm(wakeUpTime, bedTime){
 //checkTime('07:30');
 //checkTime('07:00'); // Доброе утро
 
-setDailyRhythm ('18:46', '18:47');
+setDailyRhythm ('05:02', '05:03');
